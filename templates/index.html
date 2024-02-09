@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hotel Recommender</title>
+    <style>
+       body {
+    font-family: Garamond;
+}
+body{
+    background-color: rgb(230, 230, 230);
+}
+.card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: all 0.3s ease-in-out; /* Smooth transition for all properties */
+    width: 15%;
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    text-align: left;
+    text-decoration: none;
+    background: linear-gradient(45deg, white, #7befc6); /* Vibrant gradient */
+    border: 2px solid black; /* Bright border */
+    height: 170px; /* Example fixed height */
+    overflow: auto; /* Adds scrollbar if content overflows */
+}
+
+.card:hover {
+    box-shadow: 0 15px 30px 0 rgba(0,0,0,0.5);
+    transform: translateY(-5px) rotate(5deg); /* Slight upward movement and rotation */
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+.card:hover {
+    animation: pulse 1s infinite;
+}
+
+.container {
+    padding: 2px 16px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.header {
+    background-color: #6495ED;
+    color: white;
+    padding: 10px 15px;
+    text-align: center;
+    animation: fadeIn 1s ease-out; /* Fade-in effect when the page loads */
+    transition: background-color 0.5s ease, transform 0.5s ease; /* Smooth transition for hover effects */
+}
+
+.header:hover {
+    background-color: #7A9FED; /* Slightly lighter shade on hover */
+    transform: translateY(-5px); /* Slight upward shift on hover */
+}
+
+
+.inline-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #B0E0E6;
+    transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.inline-form:hover {
+    background-color: #A0D0D6; /* Slightly different shade on hover */
+}
+
+.inline-form input[type="text"] {
+    margin-right: 1px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth transition for focus effects */
+}
+
+.inline-form input[type="text"]:focus {
+    transform: scale(1.05); /* Slightly enlarges the input field */
+    box-shadow: 0 0 8px 2px #5fbcdb; /* Adds a subtle shadow around the input field */
+}
+
+
+.button {
+    background-color: #5fbcdb;
+    color: white;
+    border: 2px solid #6CA0DC;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out; /* Smooth transition for all properties */
+}
+
+.button:hover {
+    background-color: #6CA0DC;
+    border-color: #28589C;
+    transform: scale(1.1); /* Slightly enlarge on hover */
+}
+
+.button:active {
+    background-color: #28589C;
+    border-color: #1C3E6B;
+    transform: scale(0.9); /* Slightly shrink on active */
+}
+
+/* Carousel Styles */
+.carousel {
+    position: relative;
+    max-width: 600px; /* Adjust as needed */
+    margin: auto;
+    overflow: hidden;
+}
+
+.carousel-items .carousel-item {
+    display: none;
+    text-align: center;
+}
+
+.carousel-item img {
+    width: 100%;
+    height: auto;
+}
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    color: white;
+    padding: 10px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.carousel-prev, .carousel-next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    margin-top: -22px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border-radius: 0 3px 3px 0;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.carousel-next {
+    right: 0;
+    border-radius: 3px 0 0 3px;
+}
+
+.carousel-prev:hover, .carousel-next:hover {
+    background-color: rgba(0,0,0,0.8);
+}
+
+
+    </style>
+</head>
+<body>
+    <h1 class="header">Hotel Recommender</h1>
+    <form action="/recommend" method="post" class="inline-form">
+        <label>Enter Hotel Name or City :&nbsp;&nbsp;
+        <input style="text-indent: 40px" type="text" name="input_text" placeholder="Enter Data"> </label>
+        <input type="submit" value="Search" class="button">
+    </form>
+
+
+    <!-- <div>
+        <img src="image1.jpg">
+    </div>     -->
+
+    <h2 style="text-align: center">Top Hotels by Popular Cities</h2>
+    <div>
+        {% for city, hotels in city_top_hotels.items() %}
+            <h3>{{ city }}</h3>
+            <div>
+                {% for hotel in hotels %}
+                    <a href="{{ url_for('hotel_detail', hotel_name=hotel.hotel) }}" class="card">
+                        <div class="container">
+                            <h4><b>{{ hotel.hotel }}</b></h4>
+                            <p>Our Rating : {{ hotel.sentiment_score }}</p>
+                            <p>{{ hotel.address }}</p>
+                        </div>
+                    </a>
+                {% endfor %}
+            </div>
+            <br><hr style="height: 2px">
+        {% endfor %}
+    </div>
+</body>
+</html>
